@@ -6,5 +6,4 @@ shap
 scikit-learn
 xgboost
 numpy
-seaborn
-altair
+
