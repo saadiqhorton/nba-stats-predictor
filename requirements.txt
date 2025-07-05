@@ -1,0 +1,10 @@
+streamlit
+nba_api
+pandas
+matplotlib
+shap
+scikit-learn
+xgboost
+numpy
+seaborn
+altair
