@@ -40,6 +40,23 @@ The **NBA Player Points Predictor** is an interactive web application designed t
 
 ---
 
+## Future Enhancements
+
+Some plans in the near future to expand the capabilities of the program:
+
+* **Expanded Prediction Metrics:** Incorporate prediction models for other key player statistics, such as:
+    * **Rebounds:** Predicting total rebounds per game.
+    * **Assists:** Predicting total assists per game.
+    * **Steals & Blocks:** Predicting defensive contributions.
+* **Team-Level Analytics:** Introduce features for analyzing and predicting team performance, including:
+    * Team offensive/defensive ratings.
+    * Win/loss prediction based on team matchups.
+    * Visualizations of team trends over time.
+* **Advanced Player Metrics:** Integrate more sophisticated analytical stats (e.g., Usage Rate, True Shooting Percentage) into the prediction models.
+* **Improved User Interface:** Further refine the Streamlit UI/UX for even greater clarity and aesthetic appeal.
+
+---
+
 ## How to Run This App Locally
 
 Follow these steps to get a local copy of the NBA Player Points Predictor up and running on your machine:
