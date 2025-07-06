@@ -1,9 +1,8 @@
-streamlit
+gradio
 nba_api
 pandas
 matplotlib
-shap
 scikit-learn
 xgboost
+shap
 numpy
-
