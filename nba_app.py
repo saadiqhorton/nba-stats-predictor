@@ -216,7 +216,7 @@ def main():
             return
     
     with st.spinner(f'Running prediction for {player_name.title()}...'):
-         time.sleep(random.randint(2,4))
+         time.sleep(2)
          
     player_list = players.find_players_by_full_name(player_name)
 
