@@ -305,7 +305,7 @@ def predict_player_points(player_name: str):
 
         if player_info is None:
             error_message = f"Player '{player_name}' not found. Please check the spelling."
-            return (error_message, "", "", None, None, None, None, "", "")
+            return (error_message, "", "", "", "", None, None, None, None, "", "", "")
         
         player_id = player_info['id']
         player_info_display = f"**{player_info['full_name']}** (ID: {player_id})"
@@ -320,7 +320,7 @@ def predict_player_points(player_name: str):
 
         if all_games.empty: 
             error_message = "No game data found for this player in the specified seasons. This might be due to no games played yet or an API issue."
-            return (error_message, "", "", None, None, None, None, "", "")
+            return (error_message, "", "", "", "", None, None, None, None, "", "", "")
 
         total_games_message = f"Total games combined from {len(seasons)} seasons: {len(all_games)}"
 
@@ -445,7 +445,7 @@ def predict_player_points(player_name: str):
     except Exception as e:
         error_message = f"An unexpected error occurred: {e}"
         print(f"Error during prediction: {e}")
-        return (error_message, "", "", None, None, None, None, None, None, None, "", "", "")
+        return (error_message, "", "", "", "", None, None, None, None, None, None, "", "")
 
 # --- Define the Gradio Interface ---
 
