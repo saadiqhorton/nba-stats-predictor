@@ -12,6 +12,7 @@ import time
 import random
 import io # Needed for handling plot images
 import base64 # Needed for handling plot images
+import os
 
 # --- Constants (can keep these) ---
 TEAM_LOGOS = {
@@ -479,4 +480,7 @@ iface = gr.Interface(
 
 # Launch the Gradio app
 if __name__ == "__main__":
-    iface.launch() # This starts the Gradio web server
+
+    port = int(os.environ.get("PORT", 7860))
+
+    iface.launch(server_name="0.0.0.0", server_port=port) # This starts the Gradio web server
