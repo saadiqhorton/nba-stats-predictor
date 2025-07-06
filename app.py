@@ -320,7 +320,8 @@ def predict_player_points(player_name: str):
 
         if all_games.empty: 
             error_message = "No game data found for this player in the specified seasons. This might be due to no games played yet or an API issue."
-            return (error_message, "", "", "", "", None, None, None, None, "", "", "")
+            return (error_message, "", None, "", "", None, None, None, None, None, "", "", "") # Corrected to 13 values
+#                       ^Headshot is image, so None is appropriate for that spot
 
         total_games_message = f"Total games combined from {len(seasons)} seasons: {len(all_games)}"
 
