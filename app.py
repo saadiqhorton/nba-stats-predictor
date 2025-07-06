@@ -276,7 +276,9 @@ def predict_player_points(player_name: str):
     returning all necessary outputs for Gradio.
     """
     if not player_name:
-        return ("Please enter a player name.", "", "", None, None, None, None, "", "")
+        # 1       2   3    4   5    6     7     8     9     10    11   12   13
+        return ("Please enter a player name.", "", None, "", "", None, None, None, None, None, "", "", "")
+
 
     player_name = player_name.strip()
     
@@ -305,8 +307,9 @@ def predict_player_points(player_name: str):
 
         if player_info is None:
             error_message = f"Player '{player_name}' not found. Please check the spelling."
-            return (error_message, "", "", "", "", None, None, None, None, "", "", "")
-        
+            # 1             2   3     4   5     6     7     8     9     10    11   12   13
+            return (error_message, "", None, "", "", None, None, None, None, None, "", "", "")
+                
         player_id = player_info['id']
         player_info_display = f"**{player_info['full_name']}** (ID: {player_id})"
         player_headshot_url = f"https://cdn.nba.com/headshots/nba/latest/260x190/{player_id}.png"
@@ -329,7 +332,10 @@ def predict_player_points(player_name: str):
         
         if X.empty or y.empty or len(X) < 2:
             error_message = "Not enough game data after preprocessing to train the prediction model (requires at least 2 games)."
-            return (error_message, "", "", None, None, None, None, "", "")
+            # 1             2   3     4   5     6     7     8     9     10    11   12   13
+            return (error_message, "", None, "", "", None, None, None, None, None, "", "", "")
+        
+
 
         # Store X_train, y_train in global caches for model training
         X_train_temp, X_test, y_train_temp, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
@@ -341,7 +347,9 @@ def predict_player_points(player_name: str):
         model = _train_prediction_model(X_train_hash, y_train_hash)
         if model is None:
             error_message = "Failed to train prediction model."
-            return (error_message, "", "", None, None, None, None, "", "")
+            # 1             2   3     4   5     6     7     8     9     10    11   12   13
+            return (error_message, "", None, "", "", None, None, None, None, None, "", "", "")
+
 
         scores = cross_val_score(model, X, y, cv=5, scoring='neg_mean_absolute_error')
         y_pred = model.predict(X_test)
