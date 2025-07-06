@@ -1,12 +1,19 @@
 ---
-title: NBA Player Points Predictor (Gradio)
-emoji: 🏀
+title: Nba Statmaster
+emoji: 🚀
 colorFrom: red
-colorTo: blue
-sdk: gradio # <--- CHANGE THIS TO 'gradio'
-# Remove app_port, app_file, etc. if they were there for Docker
+colorTo: red
+sdk: docker
+app_port: 8501
+tags:
+- streamlit
+pinned: false
+short_description: NBA Player Points Predictor using Python and Streamlit
 ---
 
-# NBA Player Points Predictor
 
-This is an interactive NBA player points predictor built with Gradio.
+
+Edit `/src/streamlit_app.py` to customize this app to your heart's desire. :heart:
+
+If you have any questions, checkout our [documentation](https://docs.streamlit.io) and [community
+forums](https://discuss.streamlit.io).
