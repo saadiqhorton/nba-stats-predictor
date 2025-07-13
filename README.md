@@ -67,7 +67,7 @@ Follow these steps to get a local copy of the NBA Player Points Predictor up and
     cd nba-stats-predictor
     ```
 2.  **Create a virtual environment (recommended):**
-    This isolates your project's dependencies from other Python projects.
+    This isolates the project's dependencies from other Python projects.
     ```bash
     python -m venv venv
     # On Windows, activate with:
@@ -84,7 +84,7 @@ Follow these steps to get a local copy of the NBA Player Points Predictor up and
     ```bash
     streamlit run nba_app.py
     ```
-5.  Your app will automatically open in your default web browser (usually at `http://localhost:8501`).
+5.  The app will automatically open in your default web browser (usually at `http://localhost:8501`).
 
 ---
 
@@ -92,7 +92,6 @@ Follow these steps to get a local copy of the NBA Player Points Predictor up and
 
 Feel free to reach out if you have any questions or feedback!
 
-* **Your Name:** Saadiq Horton
 * **LinkedIn:** [https://www.linkedin.com/in/saadiq-horton-367a94260/]
 * **GitHub:** [https://github.com/saadiqhorton]
 
