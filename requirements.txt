@@ -96,7 +96,6 @@ pytubefix==9.2.1
 pytweening==1.2.0
 pytz==2025.2
 pywhatkit==5.4
-pywin32==310
 pywin32-ctypes==0.2.3
 PyYAML==6.0.2
 qrcode==8.2
