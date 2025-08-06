@@ -82,7 +82,7 @@ Follow these steps to get a local copy of the NBA Player Points Predictor up and
     ```
 4.  **Run the Streamlit app:**
     ```bash
-    streamlit run nba_app.py
+    streamlit run app.py
     ```
 5.  The app will automatically open in your default web browser (usually at `http://localhost:8501`).
 
@@ -96,3 +96,4 @@ Feel free to reach out if you have any questions or feedback!
 * **GitHub:** [https://github.com/saadiqhorton]
 
 ---
+
