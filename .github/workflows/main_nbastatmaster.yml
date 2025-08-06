@@ -59,14 +59,15 @@ jobs:
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_658B3C1EBA0141B79E697DDB7F9C3C65 }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_17008ECEA4C740F09A9E6B0EF20F41E0 }}
 
-      - name: 'Deploy to Azure Web App'
+      - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v3
-        id: deploy-to-webapp
         with:
           app-name: 'nbastatmaster'
           slot-name: 'Production'
+          package: .
 
           
+
 
 
 
