@@ -108,7 +108,7 @@ rpds-py==0.26.0
 ruff==0.12.2
 safehttpx==0.1.6
 scikit-learn==1.7.0
-scipy==1.16.0
+scipy==1.11.4
 seaborn==0.13.2
 selenium==4.34.2
 semantic-version==2.10.0
