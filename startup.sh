@@ -1,3 +1,3 @@
 #!/bin/bash
-pip install -r requirements.txt
-streamlit run app.py --server.port 8000 --server.enableCORS false
+pip install --no-cache-dir -r requirements.txt
+streamlit run app.py --server.port=$PORT --server.address 0.0.0.0
