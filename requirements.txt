@@ -1,6 +1,6 @@
-streamlit==1.11.0
+streamlit>=1.24.1
 nba_api==1.1.11
-altair==4.2.2
+altair>=5.0.0
 pandas
 matplotlib
 shap
