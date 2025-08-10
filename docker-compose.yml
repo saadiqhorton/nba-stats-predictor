@@ -2,14 +2,11 @@ version: "3.8"
 services:
   nba-app:
     build:
-      context: .
+      context: /home/<your-user>/nba
     container_name: nba-app
     restart: unless-stopped
     ports:
       - "8501:8501"
-    environment:
-      # Optional: if you use any keys/configs, add them here or via Portainer env/secret
-      # NBA_API_KEY: "${NBA_API_KEY}"
     command: >
       streamlit run app.py
       --server.address=0.0.0.0
