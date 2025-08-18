@@ -4,6 +4,12 @@
 
 ---
 
+## 🌐 Live Demo
+
+Try out the live web app here: **[www.nbastatmaster.site](https://www.nbastatmaster.site)**  
+
+---
+
 ## Project Overview
 
 The **NBA Player Points Predictor** is an interactive web application designed to analyze and predict NBA player performance. Leveraging historical game log data, this tool offers insights into player scoring trends, model accuracy, and the factors influencing points scored. Built with Python and Streamlit, it provides a user-friendly interface for basketball enthusiasts, fantasy sports players, and data analytics curious minds.
@@ -57,43 +63,12 @@ Some plans in the near future to expand the capabilities of the program:
 
 ---
 
-## How to Run This App Locally
-
-Follow these steps to get a local copy of the NBA Player Points Predictor up and running on your machine:
-
-1.  **Clone the repository:**
-    ```bash
-    git clone [https://github.com/saadiqhorton/nba-stats-predictor.git](https://github.com/saadiqhorton/nba-stats-predictor.git)
-    cd nba-stats-predictor
-    ```
-2.  **Create a virtual environment (recommended):**
-    This isolates the project's dependencies from other Python projects.
-    ```bash
-    python -m venv venv
-    # On Windows, activate with:
-    .\venv\Scripts\activate
-    # On macOS/Linux, activate with:
-    source venv/bin/activate
-    ```
-3.  **Install dependencies:**
-    Ensure you have `pip` up-to-date, then install all required libraries.
-    ```bash
-    pip install -r requirements.txt
-    ```
-4.  **Run the Streamlit app:**
-    ```bash
-    streamlit run app.py
-    ```
-5.  The app will automatically open in your default web browser (usually at `http://localhost:8501`).
-
----
-
 ## Contact
 
 Feel free to reach out if you have any questions or feedback!
 
-* **LinkedIn:** [https://www.linkedin.com/in/saadiq-horton-367a94260/]
-* **GitHub:** [https://github.com/saadiqhorton]
+* **Live App:** [www.nbastatmaster.site](https://www.nbastatmaster.site)  
+* **LinkedIn:** [https://www.linkedin.com/in/saadiq-horton-367a94260/](https://www.linkedin.com/in/saadiq-horton-367a94260/)  
+* **GitHub:** [https://github.com/saadiqhorton](https://github.com/saadiqhorton)  
 
 ---
-
