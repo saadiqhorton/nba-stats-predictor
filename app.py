@@ -266,7 +266,7 @@ def main():
     </div>
     """, unsafe_allow_html=True)
     # Fetch and concatenate player game logs from NBA API for given seasons.
-    seasons = ['2023-24', '2024-25']
+    seasons = ['2023-24', '2024-25', '2025-26']
     dfs = []
     for season in seasons:
         logs = playergamelog.PlayerGameLog(
