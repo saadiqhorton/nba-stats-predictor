@@ -1,0 +1,15 @@
+version: "3.8"
+services:
+  nba-app:
+    build:
+      context: .
+    container_name: nba-app
+    restart: unless-stopped
+    ports:
+      - "8088:8501"
+    command: >
+      streamlit run app.py
+      --server.address=0.0.0.0
+      --server.port=8501
+      --browser.gatherUsageStats=false
+      --server.headless=true
