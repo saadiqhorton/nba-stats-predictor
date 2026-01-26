@@ -187,13 +187,13 @@ def plot_residuals(errors):
     st.pyplot(fig)
 
 
-def plot_points_vs_teams(teams_clean, avg_points, player_name):
+def plot_points_vs_teams(teams_clean, avg_stats, player_name, metric_label):
     fig, ax = plt.subplots(figsize=(10, 5))
     st.subheader("Performance Against High Impact Teams")
-    ax.bar(teams_clean, avg_points)
-    ax.set_title(f"{player_name.title()} Performance vs. Impact Teams")
+    ax.bar(teams_clean, avg_stats)
+    ax.set_title(f"{player_name.title()} Performance vs. Impact Teams - {metric_label}")
     ax.set_xlabel("Teams")
-    ax.set_ylabel("Average Points")
+    ax.set_ylabel(f"Average {metric_label}")
     plt.tight_layout()
     st.pyplot(fig)
 
@@ -637,7 +637,7 @@ def main():
             plot_feature_importance(model, features)
             plot_actual_vs_predicted(y_test, y_pred, player_name, mae)
             plot_residuals(errors)
-            plot_points_vs_teams(teams_clean, avg_stats_list, player_name)
+            plot_points_vs_teams(teams_clean, avg_stats_list, player_name, metric_label)
             plot_shap(model, X)
 
 
