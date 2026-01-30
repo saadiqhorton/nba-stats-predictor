@@ -2,21 +2,16 @@
 
 import pytest
 import pandas as pd
-import sys
-import os
 from unittest.mock import Mock, patch
 
-# Add parent directory to path to import app
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-
-from app import find_player, fetch_player_game_logs
+from src.api import find_player, fetch_player_game_logs
 
 
 class TestFindPlayer:
     """Tests for find_player function."""
 
     @pytest.mark.unit
-    @patch("app.players.find_players_by_full_name")
+    @patch("src.api.players.find_players_by_full_name")
     def test_find_existing_player(self, mock_find):
         """Test finding an existing player."""
         # Mock the API response
@@ -37,7 +32,7 @@ class TestFindPlayer:
         mock_find.assert_called_once_with("LeBron James")
 
     @pytest.mark.unit
-    @patch("app.players.find_players_by_full_name")
+    @patch("src.api.players.find_players_by_full_name")
     def test_find_nonexistent_player(self, mock_find):
         """Test finding a player that doesn't exist."""
         # Mock empty response
@@ -49,7 +44,7 @@ class TestFindPlayer:
         mock_find.assert_called_once_with("Fake Player")
 
     @pytest.mark.unit
-    @patch("app.players.find_players_by_full_name")
+    @patch("src.api.players.find_players_by_full_name")
     def test_returns_first_match(self, mock_find):
         """Test that function returns first match when multiple players found."""
         # Mock multiple players (edge case)
@@ -64,7 +59,7 @@ class TestFindPlayer:
         assert result["full_name"] == "Player One"
 
     @pytest.mark.unit
-    @patch("app.players.find_players_by_full_name")
+    @patch("src.api.players.find_players_by_full_name")
     def test_whitespace_handling(self, mock_find):
         """Test handling of whitespace in player names."""
         # Mock the API response
@@ -96,8 +91,8 @@ class TestFindPlayer:
             mock_find.reset_mock()
 
     @pytest.mark.unit
-    @patch("app.players.find_players_by_full_name")
-    @patch("app.players.get_players")
+    @patch("src.api.players.find_players_by_full_name")
+    @patch("src.api.players.get_players")
     def test_case_insensitive_fallback(self, mock_get_players, mock_find):
         """Test case-insensitive fallback search when exact match fails."""
         # Mock exact search as empty
@@ -141,8 +136,8 @@ class TestFindPlayer:
             assert result["full_name"] == "LeBron James"
 
     @pytest.mark.unit
-    @patch("app.players.find_players_by_full_name")
-    @patch("app.players.get_players")
+    @patch("src.api.players.find_players_by_full_name")
+    @patch("src.api.players.get_players")
     def test_partial_match_preference(self, mock_get_players, mock_find):
         """Test that exact name matches are preferred over partial matches."""
         # Mock exact search as empty
@@ -178,8 +173,8 @@ class TestFindPlayer:
         assert result is None
 
     @pytest.mark.unit
-    @patch("app.players.find_players_by_full_name")
-    @patch("app.players.get_players")
+    @patch("src.api.players.find_players_by_full_name")
+    @patch("src.api.players.get_players")
     def test_fallback_search_error_handling(self, mock_get_players, mock_find):
         """Test that fallback search gracefully handles errors."""
         # Mock both searches to fail
@@ -192,8 +187,8 @@ class TestFindPlayer:
         assert result is None
 
     @pytest.mark.unit
-    @patch("app.players.find_players_by_full_name")
-    @patch("app.players.get_players")
+    @patch("src.api.players.find_players_by_full_name")
+    @patch("src.api.players.get_players")
     def test_lebron_james_specific_cases(self, mock_get_players, mock_find):
         """Test specific LeBron James scenarios that were failing."""
         # Test the original failing case: trailing space
@@ -247,7 +242,7 @@ class TestFetchPlayerGameLogs:
         return pd.DataFrame(data)
 
     @pytest.mark.unit
-    @patch("app.playergamelog.PlayerGameLog")
+    @patch("src.api.playergamelog.PlayerGameLog")
     def test_fetch_successful(self, mock_gamelog, mock_game_logs):
         """Test successful game log fetch."""
         # Mock the API response
@@ -268,7 +263,7 @@ class TestFetchPlayerGameLogs:
         )
 
     @pytest.mark.unit
-    @patch("app.playergamelog.PlayerGameLog")
+    @patch("src.api.playergamelog.PlayerGameLog")
     def test_fetch_api_error(self, mock_gamelog):
         """Test handling of API errors."""
         # Mock API error
@@ -281,7 +276,7 @@ class TestFetchPlayerGameLogs:
         assert result.empty
 
     @pytest.mark.unit
-    @patch("app.playergamelog.PlayerGameLog")
+    @patch("src.api.playergamelog.PlayerGameLog")
     def test_fetch_empty_response(self, mock_gamelog):
         """Test handling of empty game logs."""
         # Mock empty response
@@ -295,7 +290,7 @@ class TestFetchPlayerGameLogs:
         assert result.empty
 
     @pytest.mark.unit
-    @patch("app.playergamelog.PlayerGameLog")
+    @patch("src.api.playergamelog.PlayerGameLog")
     def test_different_seasons(self, mock_gamelog, mock_game_logs):
         """Test fetching different seasons."""
         mock_instance = Mock()
@@ -310,7 +305,7 @@ class TestFetchPlayerGameLogs:
             assert isinstance(result, pd.DataFrame)
 
     @pytest.mark.unit
-    @patch("app.playergamelog.PlayerGameLog")
+    @patch("src.api.playergamelog.PlayerGameLog")
     def test_different_player_ids(self, mock_gamelog, mock_game_logs):
         """Test fetching for different player IDs."""
         mock_instance = Mock()

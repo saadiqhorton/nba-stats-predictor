@@ -3,13 +3,8 @@
 import pytest
 import pandas as pd
 import numpy as np
-import sys
-import os
 
-# Add parent directory to path to import app
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-
-from app import preprocess_game_data, make_features_and_target
+from src.data_processing import preprocess_game_data, make_features_and_target
 
 
 class TestPreprocessGameData:
@@ -77,9 +72,6 @@ class TestPreprocessGameData:
     def test_percentage_calculations(self, sample_game_data):
         """Test that percentage calculations are correct."""
         recent_games = preprocess_game_data(sample_game_data)
-
-        # First row: FGM=10, FGA=20, so FG% should be 0.5
-        first_row = recent_games.iloc[0]
 
         # Note: Due to shuffling, we need to find the row with specific values
         # Instead, let's just verify percentages are between 0 and 1
