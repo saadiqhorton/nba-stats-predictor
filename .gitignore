@@ -209,6 +209,19 @@ __marimo__/
 
 .python_packages/
 
-# Project-specific docs / local notes
+# Project-specific
 PYTHON_VERSION.md
 test_lebron.py
+
+# Virtual environments (all naming conventions)
+test_venv/
+.venv/
+venv/
+
+# IDE
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db

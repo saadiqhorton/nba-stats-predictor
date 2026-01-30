@@ -1,6 +1,5 @@
 streamlit==1.31.0
 nba_api==1.4.1
-altair==5.2.0
 pandas>=2.2.0
 matplotlib==3.8.2
 shap==0.44.1

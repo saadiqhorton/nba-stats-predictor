@@ -1,0 +1,36 @@
+# Virtual environments
+test_venv/
+venv/
+.venv/
+
+# Caches
+__pycache__/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Coverage
+htmlcov/
+.coverage
+.coverage.*
+
+# Git
+.git/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+
+# Dev container
+.devcontainer/
+
+# Docs and tests not needed in container
+docs/
+tests/
+*.md
+pytest.ini
+requirements-dev.txt
+run_*.sh
