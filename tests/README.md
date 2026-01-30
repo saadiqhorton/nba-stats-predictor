@@ -2,251 +2,74 @@
 
 ## Overview
 
-This test suite provides comprehensive coverage for the NBA Stats Predictor application, ensuring code quality and reliability.
+Comprehensive test coverage for the NBA Stats Predictor application, including unit tests, integration tests, and end-to-end webapp tests.
 
 ## Test Structure
 
 ```
 tests/
-├── __init__.py                  # Test package initialization
-├── test_utils.py                # Tests for utility functions
-├── test_data_processing.py      # Tests for data preprocessing
-├── test_api_functions.py        # Tests for API interactions (mocked)
-└── test_model_training.py       # Tests for ML model training
+├── conftest.py              # Shared fixtures, sys.path setup, cache clearing
+├── test_utils.py            # is_home_game, get_current_season, get_recent_seasons
+├── test_data_processing.py  # preprocess_game_data, make_features_and_target
+├── test_api_functions.py    # find_player, fetch_player_game_logs (mocked)
+├── test_api_integration.py  # fetch_and_combine_game_logs, KeyError branch
+├── test_model_training.py   # train_model, splits, reproducibility
+├── test_display_functions.py# _format_date_with_suffix, safe_divide, _prepare_prediction_input
+├── test_plots.py            # All plotting functions + SHAP error handling
+├── test_ui_components.py    # UI rendering, XSS escaping, predictions
+└── test_webapp.py           # Playwright end-to-end webapp tests
 ```
 
-## Test Coverage
+## Test Counts
 
-### 1. **test_utils.py** - Utility Functions
-- `is_home_game()` - Home/away game detection
-- `get_current_season()` - Season calculation logic
-- `get_recent_seasons()` - Season list generation
-
-**Total Tests**: 12
-
-### 2. **test_data_processing.py** - Data Processing
-- Feature engineering (FG%, FG3%, FT%)
-- Rolling averages calculation
-- One-hot encoding for opponents
-- Home/away encoding
-- Zero division handling
-- Data shuffling with reproducibility
-
-**Total Tests**: 12
-
-### 3. **test_api_functions.py** - API Functions (Mocked)
-- Player search (`find_player()`)
-- Game log fetching (`fetch_player_game_logs()`)
-- Error handling for API failures
-- Empty response handling
-
-**Total Tests**: 9
-
-### 4. **test_model_training.py** - Model Training
-- Model fitting and predictions
-- Train/test split validation
-- Feature importances
-- Reproducibility checks
-- Data leakage prevention
-- Different dataset sizes
-
-**Total Tests**: 12
-
-**Total Test Cases**: 45+
+| File | Tests | What It Covers |
+|------|------:|----------------|
+| `test_utils.py` | 11 | Home/away detection, season calculation |
+| `test_data_processing.py` | 13 | Feature engineering, encoding, zero division |
+| `test_api_functions.py` | 14 | Player search, game log fetching, error handling |
+| `test_api_integration.py` | 5 | Multi-season fetching, KeyError branch |
+| `test_model_training.py` | 10 | Model fitting, splits, reproducibility, leakage |
+| `test_display_functions.py` | 12 | Date formatting, safe division, prediction input |
+| `test_plots.py` | 9 | All 6 plot functions, SHAP failure handling |
+| `test_ui_components.py` | 9 | Player header, game tables, predictions, XSS |
+| `test_webapp.py` | 9 | Full app via Playwright (run separately) |
+| **Total** | **92+9** | **93 unit + 9 e2e** |
 
 ## Running Tests
 
-### Setup
-
-1. **Create virtual environment** (if not already created):
-   ```bash
-   python3 -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
-   ```
-
-2. **Install dependencies**:
-   ```bash
-   pip install -r requirements.txt
-   pip install -r requirements-dev.txt
-   ```
-
-### Run All Tests
+### Unit and Integration Tests
 
 ```bash
-# Run all tests with coverage
-pytest
+# Run all tests (excludes webapp tests)
+pytest tests/ --ignore=tests/test_webapp.py
 
-# Run with verbose output
-pytest -v
+# Run with coverage
+pytest tests/ --ignore=tests/test_webapp.py --cov=. --cov-report=term-missing
 
-# Run with coverage report
-pytest --cov=. --cov-report=html
-```
-
-### Run Specific Test Files
-
-```bash
-# Run only utility tests
-pytest tests/test_utils.py
-
-# Run only data processing tests
+# Run specific file
 pytest tests/test_data_processing.py
 
-# Run only API tests
-pytest tests/test_api_functions.py
-
-# Run only model tests
-pytest tests/test_model_training.py
-```
-
-### Run Tests by Marker
-
-```bash
-# Run only unit tests
+# Run by marker
 pytest -m unit
-
-# Run only integration tests
-pytest -m integration
-
-# Run only slow tests
-pytest -m slow
 ```
 
-### Run Specific Test
+### End-to-End Webapp Tests
 
 ```bash
-# Run a specific test function
-pytest tests/test_utils.py::TestIsHomeGame::test_home_game_vs
-
-# Run a specific test class
-pytest tests/test_utils.py::TestIsHomeGame
+pip install playwright
+playwright install chromium
+python scripts/with_server.py \
+  --server "streamlit run app.py --server.headless true" \
+  --port 8501 \
+  -- python tests/test_webapp.py
 ```
 
 ## Test Markers
 
-Tests are marked with the following markers:
-
 - `@pytest.mark.unit` - Fast unit tests
-- `@pytest.mark.integration` - Integration tests (slower)
+- `@pytest.mark.integration` - Integration tests
 - `@pytest.mark.slow` - Slow-running tests
 
-## Coverage Report
+## Coverage
 
-After running tests with coverage, view the HTML report:
-
-```bash
-# Generate coverage report
-pytest --cov=. --cov-report=html
-
-# Open report in browser (Linux/Mac)
-open htmlcov/index.html
-
-# Or on Windows
-start htmlcov/index.html
-```
-
-## Continuous Integration
-
-These tests are designed to run in CI/CD pipelines. Add to your `.github/workflows/test.yml`:
-
-```yaml
-name: Tests
-
-on: [push, pull_request]
-
-jobs:
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.11'
-      - name: Install dependencies
-        run: |
-          pip install -r requirements.txt
-          pip install -r requirements-dev.txt
-      - name: Run tests
-        run: pytest --cov=. --cov-report=xml
-      - name: Upload coverage
-        uses: codecov/codecov-action@v2
-```
-
-## Writing New Tests
-
-### Test Structure
-
-```python
-import pytest
-
-class TestYourFunction:
-    """Tests for your_function."""
-    
-    @pytest.fixture
-    def sample_data(self):
-        """Create sample data for testing."""
-        return {"key": "value"}
-    
-    @pytest.mark.unit
-    def test_basic_functionality(self, sample_data):
-        """Test basic functionality."""
-        result = your_function(sample_data)
-        assert result == expected_value
-    
-    @pytest.mark.unit
-    def test_edge_case(self):
-        """Test edge case handling."""
-        result = your_function(edge_case_input)
-        assert result is not None
-```
-
-### Best Practices
-
-1. **Use descriptive test names** - Test names should describe what they test
-2. **One assertion per test** - Keep tests focused (when possible)
-3. **Use fixtures** - Share common setup code
-4. **Mock external dependencies** - Don't make real API calls
-5. **Test edge cases** - Empty inputs, zero values, large datasets
-6. **Check for errors** - Test error handling paths
-
-## Troubleshooting
-
-### Import Errors
-
-If you get import errors, make sure you're running tests from the project root:
-
-```bash
-cd /path/to/nba-stats-predictor
-pytest
-```
-
-### Streamlit Cache Warnings
-
-Tests may show Streamlit cache warnings. These are expected and can be ignored during testing.
-
-### Mock Failures
-
-If mocked tests fail, ensure you're patching the correct import path:
-
-```python
-# Correct: patch where it's used
-@patch('app.players.find_players_by_full_name')
-
-# Incorrect: patch where it's defined
-@patch('nba_api.stats.static.players.find_players_by_full_name')
-```
-
-## Next Steps
-
-1. **Increase coverage** - Aim for 80%+ code coverage
-2. **Add integration tests** - Test full workflows
-3. **Add performance tests** - Test caching effectiveness
-4. **Add UI tests** - Test Streamlit components (using selenium)
-5. **Set up CI/CD** - Automate testing on every commit
-
-## Resources
-
-- [pytest documentation](https://docs.pytest.org/)
-- [pytest-mock documentation](https://pytest-mock.readthedocs.io/)
-- [pytest-cov documentation](https://pytest-cov.readthedocs.io/)
+Current coverage: **83%** overall (all source modules at 99-100% except `app.py` entry point, which is covered by webapp e2e tests).
