@@ -1,15 +1,98 @@
 version: "3.8"
+
 services:
-  nba-app:
+  # Nginx reverse proxy and load balancer
+  nginx:
     build:
-      context: .
-    container_name: nba-app
+      context: ./nginx
+    container_name: nba-nginx
     restart: unless-stopped
     ports:
-      - "8088:8501"
+      - "8088:80"
+    depends_on:
+      nba-app-1:
+        condition: service_healthy
+      nba-app-2:
+        condition: service_healthy
+      nba-app-3:
+        condition: service_healthy
+    networks:
+      - nba-network
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost/nginx-health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  # Streamlit backend instance 1
+  nba-app-1:
+    build:
+      context: .
+    container_name: nba-app-1
+    restart: unless-stopped
+    expose:
+      - "8501"
     command: >
       streamlit run app.py
       --server.address=0.0.0.0
       --server.port=8501
       --browser.gatherUsageStats=false
       --server.headless=true
+    networks:
+      - nba-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8501/_stcore/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Streamlit backend instance 2
+  nba-app-2:
+    build:
+      context: .
+    container_name: nba-app-2
+    restart: unless-stopped
+    expose:
+      - "8501"
+    command: >
+      streamlit run app.py
+      --server.address=0.0.0.0
+      --server.port=8501
+      --browser.gatherUsageStats=false
+      --server.headless=true
+    networks:
+      - nba-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8501/_stcore/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Streamlit backend instance 3
+  nba-app-3:
+    build:
+      context: .
+    container_name: nba-app-3
+    restart: unless-stopped
+    expose:
+      - "8501"
+    command: >
+      streamlit run app.py
+      --server.address=0.0.0.0
+      --server.port=8501
+      --browser.gatherUsageStats=false
+      --server.headless=true
+    networks:
+      - nba-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8501/_stcore/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+networks:
+  nba-network:
+    driver: bridge
