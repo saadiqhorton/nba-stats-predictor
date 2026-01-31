@@ -4,6 +4,31 @@ All notable changes to this project are documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
+## [1.2.0] - 2026-01-30
+
+### Added
+- Nginx reverse proxy and load balancer for horizontal scaling
+- 3 Streamlit backend instances behind Nginx with IP-based session routing
+- Rate limiting at 10 requests per second per client IP (burst 20)
+- Security headers: X-Frame-Options, X-Content-Type-Options, X-XSS-Protection, Content-Security-Policy, Referrer-Policy
+- Health checks on all containers (Nginx and Streamlit instances)
+- `scripts/scale.sh` to scale backend instances from 1 to 8
+- `scripts/reload_nginx.sh` to reload Nginx configuration without downtime
+- `tests/test_load_balancer.sh` with 16 integration tests (connectivity, security, affinity, failover)
+- Load balancer feature documentation
+- Architecture Decision Record (ADR-002) for load balancer design
+
+### Changed
+- `docker-compose.yml` now defines 4 services (Nginx + 3 app instances) on a shared Docker network
+- `Dockerfile` now includes a health check endpoint and graceful shutdown signal
+- App instances are no longer directly accessible from outside Docker (internal only)
+- Concurrent user capacity increased from ~20-30 to ~60-90
+
+### Security
+- Network isolation: only Nginx port (8088) is exposed to the host
+- Nginx version hidden via `server_tokens off`
+- WebSocket-aware proxying preserves Streamlit's connection requirements
+
 ## [1.1.0] - 2026-01-29
 
 ### Added
