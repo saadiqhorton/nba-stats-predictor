@@ -143,6 +143,7 @@ class TestPreparePreparationInput:
         """Create sample last 10 games dataframe."""
         return pd.DataFrame(
             {
+                "GAME_DATE": ["2024-01-01", "2024-01-03", "2024-01-05"],
                 "FGM": [5.0, 6.0, 7.0],
                 "FGA": [10.0, 12.0, 14.0],
                 "FG3M": [2.0, 3.0, 2.0],

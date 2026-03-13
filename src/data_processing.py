@@ -49,6 +49,9 @@ def preprocess_game_data(all_games: pd.DataFrame) -> pd.DataFrame:
     """Preprocess game data and create features for model training."""
     recent_games = all_games.copy()
 
+    recent_games["GAME_DATE"] = pd.to_datetime(recent_games["GAME_DATE"])
+    recent_games = recent_games.sort_values(by="GAME_DATE", ascending=True).reset_index(drop=True)
+
     recent_games["FG%"] = safe_divide(recent_games["FGM"], recent_games["FGA"])
     recent_games["FG3%"] = safe_divide(recent_games["FG3M"], recent_games["FG3A"])
     recent_games["FT%"] = safe_divide(recent_games["FTM"], recent_games["FTA"])
@@ -151,8 +154,12 @@ def _prepare_prediction_input(
     last_10_processed["FT%"] = safe_divide(
         last_10_processed["FTM"], last_10_processed["FTA"]
     )
+    last_10_processed["GAME_DATE"] = pd.to_datetime(last_10_processed["GAME_DATE"])
+    last_10_processed = last_10_processed.sort_values(by="GAME_DATE", ascending=True).reset_index(drop=True)
+
     last_10_processed["FGA_5game_avg"] = (
         last_10_processed["FGA"]
+        .shift(1)
         .rolling(window=ROLLING_WINDOW_SIZE, min_periods=1)
         .mean()
     )

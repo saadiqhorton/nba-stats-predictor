@@ -1,12 +1,14 @@
 """NBA API interaction functions for the NBA Stats Predictor."""
 
 import logging
+import time
 
 import pandas as pd
 import streamlit as st
 from nba_api.stats.endpoints import playergamelog
 from nba_api.stats.static import players
 
+from src.constants import API_MAX_RETRIES, API_RETRY_DELAY, API_TIMEOUT
 from src.data_processing import get_recent_seasons
 
 logger = logging.getLogger(__name__)
@@ -45,16 +47,38 @@ def find_player(player_name: str) -> dict | None:
 
 @st.cache_data(ttl=3600)
 def fetch_player_game_logs(player_id: int, season: str) -> pd.DataFrame:
-    """Fetch game logs for a player in a specific season."""
-    try:
-        logs = playergamelog.PlayerGameLog(
-            player_id=player_id, season=season, season_type_all_star="Regular Season"
-        ).get_data_frames()[0]
-        return logs
-    except Exception as e:
-        logger.warning("Error fetching data for season %s: %s", season, e)
-        st.warning(f"Error fetching data for season {season}: {e}")
-        return pd.DataFrame()
+    """Fetch game logs for a player in a specific season with retry logic."""
+    for attempt in range(1, API_MAX_RETRIES + 1):
+        try:
+            logs = playergamelog.PlayerGameLog(
+                player_id=player_id,
+                season=season,
+                season_type_all_star="Regular Season",
+                timeout=API_TIMEOUT,
+            ).get_data_frames()[0]
+            return logs
+        except Exception as e:
+            if attempt < API_MAX_RETRIES:
+                delay = API_RETRY_DELAY * (2 ** (attempt - 1))
+                logger.warning(
+                    "Attempt %d/%d failed for season %s: %s. Retrying in %ds...",
+                    attempt,
+                    API_MAX_RETRIES,
+                    season,
+                    e,
+                    delay,
+                )
+                time.sleep(delay)
+            else:
+                logger.warning(
+                    "All %d attempts failed for season %s: %s",
+                    API_MAX_RETRIES,
+                    season,
+                    e,
+                )
+                st.warning(f"Error fetching data for season {season}: {e}")
+                return pd.DataFrame()
+    return pd.DataFrame()
 
 
 def fetch_and_combine_game_logs(
@@ -63,7 +87,9 @@ def fetch_and_combine_game_logs(
     """Fetch and combine game logs from multiple seasons."""
     seasons = get_recent_seasons(num_seasons=num_seasons)
     dfs = []
-    for season in seasons:
+    for i, season in enumerate(seasons):
+        if i > 0:
+            time.sleep(0.6)
         logs = fetch_player_game_logs(player_id, season)
         if logs.empty:
             st.warning(f"No game logs found for season {season}.")

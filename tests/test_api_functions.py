@@ -259,13 +259,14 @@ class TestFetchPlayerGameLogs:
 
         # Verify API was called with correct parameters
         mock_gamelog.assert_called_once_with(
-            player_id=2544, season="2023-24", season_type_all_star="Regular Season"
+            player_id=2544, season="2023-24", season_type_all_star="Regular Season", timeout=30
         )
 
     @pytest.mark.unit
+    @patch("src.api.time.sleep")
     @patch("src.api.playergamelog.PlayerGameLog")
-    def test_fetch_api_error(self, mock_gamelog):
-        """Test handling of API errors."""
+    def test_fetch_api_error(self, mock_gamelog, mock_sleep):
+        """Test handling of API errors after all retries exhausted."""
         # Mock API error
         mock_gamelog.side_effect = Exception("API Error")
 
@@ -274,6 +275,26 @@ class TestFetchPlayerGameLogs:
         # Should return empty DataFrame on error
         assert isinstance(result, pd.DataFrame)
         assert result.empty
+        # Should have retried (API_MAX_RETRIES - 1 sleeps)
+        assert mock_sleep.call_count == 2
+
+    @pytest.mark.unit
+    @patch("src.api.time.sleep")
+    @patch("src.api.playergamelog.PlayerGameLog")
+    def test_fetch_retry_succeeds(self, mock_gamelog, mock_sleep):
+        """Test that fetch succeeds after a transient failure."""
+        mock_instance = Mock()
+        mock_instance.get_data_frames.return_value = [
+            pd.DataFrame({"PTS": [25], "MATCHUP": ["LAL vs. BOS"]})
+        ]
+        # First call fails, second succeeds
+        mock_gamelog.side_effect = [Exception("Transient Error"), mock_instance]
+
+        result = fetch_player_game_logs(player_id=2544, season="2023-24")
+
+        assert isinstance(result, pd.DataFrame)
+        assert not result.empty
+        assert mock_sleep.call_count == 1
 
     @pytest.mark.unit
     @patch("src.api.playergamelog.PlayerGameLog")
