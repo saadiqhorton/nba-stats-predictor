@@ -135,10 +135,7 @@ def _run_single_metric_prediction(
 
     avg_stats_pred = _prepare_prediction_input(last_10, X_target)
     prediction_from_avg = model_target.predict(avg_stats_pred)[0]
-    st.markdown(
-        f"<h2 style='color: #50fa7b;'>Predicted {metric_label}: {prediction_from_avg:.2f}</h2>",
-        unsafe_allow_html=True,
-    )
+    st.metric(f"Predicted {metric_label}", f"{prediction_from_avg:.2f}")
 
     # Section 2: Model Evaluation
     st.write("---")

@@ -45,8 +45,7 @@ def test_nba_webapp():
 
             # === Test 2: Title displayed ===
             print("[Test 2] Title element...")
-            # Streamlit renders the title via unsafe_allow_html markdown,
-            # so we need to wait for the full DOM and check for the h1 inside it.
+            # Streamlit renders the title via st.title (theme-aware h1).
             page.wait_for_timeout(3000)
             title = page.locator("h1")
             title_found = False
