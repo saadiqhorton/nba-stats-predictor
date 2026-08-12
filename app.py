@@ -12,9 +12,7 @@ from src.ui_components import (
     run_metric_predictions,
 )
 
-st.markdown(
-    "<h1 style='color: white;'>NBA Player Points Predictor</h1>", unsafe_allow_html=True
-)
+st.title("NBA Player Points Predictor")
 
 
 def main() -> None:
@@ -56,10 +54,7 @@ def main() -> None:
         last_10 = all_games_sorted.head(LAST_N_GAMES).copy()
 
     if st.session_state.show_success:
-        st.markdown(
-            "<span style='color: #50fa7b; font-size: 18px;'>Player found successfully</span>",
-            unsafe_allow_html=True,
-        )
+        st.success("Player found successfully")
 
     display_player_header(player_info, player_id)
     display_last_n_games(all_games_sorted, LAST_N_GAMES)
